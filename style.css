@@ -1,0 +1,127 @@
+:root {
+  color-scheme: dark;
+  --sfondo: #15171c;
+  --carta: #1f232b;
+  --bordo: #2e3440;
+  --testo: #e8e9ec;
+  --tenue: #9aa1ad;
+  --accento: #7fb3ff;
+  --ok: #8fd19e;
+  --manca: #f2b36f;
+  --tasto: #2b3039;
+  --tasto-su: #3a414d;
+  --rosso: #9c2f4d;
+  --rosso-su: #c0406a;
+  --gioco: #0d0e11;
+  --pannello: #1a1d23;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--sfondo);
+  color: var(--testo);
+  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+[hidden] { display: none !important; }
+button { font: inherit; color: inherit; }
+
+/* ---------------------------------------------------------------- libreria */
+
+#libreria { max-width: 560px; margin: 0 auto; padding: max(16px, env(safe-area-inset-top)) 16px 32px; }
+.testata { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 16px; }
+.testata h1 { font-size: 1.6rem; margin: 0; letter-spacing: .02em; }
+#schede { display: grid; gap: 14px; }
+.scheda { background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px; padding: 16px; }
+.scheda-titolo { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.scheda h2 { font-size: 1.15rem; margin: 0; }
+.sistema { color: var(--tenue); font-size: .85rem; }
+.righe { list-style: none; padding: 0; margin: 10px 0 14px; color: var(--tenue); font-size: .92rem; }
+.righe li { padding: 2px 0 2px 16px; position: relative; }
+.righe li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--bordo); }
+.righe li.ok::before { background: var(--ok); }
+.righe li.manca::before { background: var(--manca); }
+.azioni { display: flex; flex-wrap: wrap; gap: 8px; }
+.tasto {
+  border: 0; border-radius: 10px; padding: 10px 16px; min-height: 44px;
+  background: var(--accento); color: #0b1424; font-weight: 600;
+}
+.tasto.secondario { background: var(--tasto); color: var(--testo); font-weight: 500; }
+.tasto:active { filter: brightness(1.15); }
+.piede { color: var(--tenue); font-size: .85rem; margin-top: 22px; }
+.piede p { margin: 6px 0; }
+
+#avviso {
+  position: fixed; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom));
+  max-width: 528px; margin: 0 auto; z-index: 50;
+  background: #2b3242; color: var(--testo); border: 1px solid #3d4659;
+  border-radius: 12px; padding: 12px 14px; box-shadow: 0 6px 24px rgba(0, 0, 0, .4);
+}
+
+/* ---------------------------------------------------------------- gioco */
+
+#gioco {
+  position: fixed; inset: 0; display: flex; flex-direction: column;
+  background: var(--gioco);
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
+.barra-gioco { display: flex; gap: 6px; padding: 6px 8px; flex: none; }
+.tasto-barra {
+  border: 0; border-radius: 8px; background: var(--pannello); color: var(--tenue);
+  padding: 6px 12px; min-height: 36px; font-size: .9rem;
+}
+.tasto-barra:first-child { margin-right: auto; }
+#veloce { min-width: 48px; }
+
+/* lo schermo: con i nostri comandi ha le proporzioni del sistema; col gamepad di EmulatorJS prende tutto */
+/* height: auto batte l'height: 100% di .ejs_parent, così vale l'aspect-ratio */
+#schermo { position: relative; width: 100%; height: auto; flex: none; aspect-ratio: var(--aspetto, 1.111); max-height: 56vh; }
+#schermo.ejs_parent { background: #000; }
+/* i comandi sono i nostri: il tasto di EmulatorJS per aprire il suo gamepad non serve */
+#gioco .ejs_virtualGamepad_open { display: none !important; }
+
+/* ---------------------------------------------------------------- comandi nostri */
+
+#comandi {
+  flex: 1; position: relative; display: grid;
+  grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto;
+  grid-template-areas: "spalle spalle" "croce ab" "centrali centrali";
+  padding: 10px 18px 18px; background: var(--pannello);
+  touch-action: none;
+}
+.spalle { grid-area: spalle; display: flex; justify-content: space-between; visibility: hidden; }
+#comandi[data-sistema="gba"] .spalle { visibility: visible; }
+.croce { grid-area: croce; align-self: center; justify-self: start; position: relative; width: 168px; height: 168px; touch-action: none; }
+.braccio { position: absolute; background: var(--tasto); border-radius: 10px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .35); }
+.braccio.orizzontale { left: 0; right: 0; top: 56px; height: 56px; }
+.braccio.verticale { top: 0; bottom: 0; left: 56px; width: 56px; }
+.mozzo { position: absolute; left: 70px; top: 70px; width: 28px; height: 28px; border-radius: 50%; background: rgba(0, 0, 0, .25); }
+/* evidenzia la direzione premuta */
+.croce::after { content: ""; position: absolute; width: 56px; height: 56px; border-radius: 10px; background: var(--tasto-su); opacity: 0; }
+.croce[data-dir~="SU"]::after { opacity: 1; left: 56px; top: 0; }
+.croce[data-dir~="GIU"]::after { opacity: 1; left: 56px; top: 112px; }
+.croce[data-dir~="SX"]::after { opacity: 1; left: 0; top: 56px; }
+.croce[data-dir~="DX"]::after { opacity: 1; left: 112px; top: 56px; }
+.ab { grid-area: ab; align-self: center; justify-self: end; position: relative; width: 168px; height: 150px; }
+.tasto-pad { border: 0; touch-action: none; color: var(--testo); font-weight: 700; letter-spacing: .04em; }
+.tondo {
+  position: absolute; width: 72px; height: 72px; border-radius: 50%;
+  background: var(--rosso); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .35); font-size: 1.3rem;
+}
+.tondo.a { right: 0; top: 4px; }
+.tondo.b { left: 6px; bottom: 4px; }
+.tondo.premuto { background: var(--rosso-su); transform: scale(.95); }
+.centrali { grid-area: centrali; display: flex; justify-content: center; gap: 22px; padding-top: 6px; }
+.pillola {
+  min-width: 78px; height: 30px; border-radius: 15px; background: var(--tasto);
+  font-size: .72rem; color: var(--tenue); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .35);
+}
+.spalle .pillola { min-width: 96px; height: 34px; font-size: .9rem; }
+.pillola.premuto { background: var(--tasto-su); color: var(--testo); }
+
+@media (max-width: 360px) {
+  .croce { transform: scale(.88); transform-origin: left center; }
+  .ab { transform: scale(.88); transform-origin: right center; }
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<!-- Nessuna connessione verso l'esterno (connect-src 'self'). 'unsafe-eval' serve agli estrattori
+     7z/zip di EmulatorJS (vecchio codice emscripten), 'wasm-unsafe-eval' ai core WebAssembly. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'wasm-unsafe-eval' 'unsafe-eval'; worker-src 'self' blob:; connect-src 'self' blob: data:; img-src 'self' blob: data:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; font-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="theme-color" content="#15171c">
+<title>Giochi</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="vendor/emulatorjs/emulator.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main id="libreria">
+  <header class="testata">
+    <h1>Giochi</h1>
+    <button id="importa-gioco" class="tasto secondario" type="button">Importa un gioco</button>
+  </header>
+  <section id="schede" aria-live="polite"></section>
+  <footer class="piede">
+    <p>Giochi e salvataggi restano solo su questo telefono: l'app non li manda da nessuna parte.
+      Il salvataggio vero è quello fatto dal menu del gioco; l'istantanea per riprendere è una comodità.</p>
+    <p id="memoria"></p>
+  </footer>
+</main>
+
+<div id="gioco" hidden>
+  <div class="barra-gioco">
+    <button id="esci" class="tasto-barra" type="button" aria-label="Torna alla libreria">‹ Libreria</button>
+    <button id="veloce" class="tasto-barra" type="button" aria-label="Velocità">1×</button>
+    <button id="backup" class="tasto-barra" type="button" aria-label="Esporta backup">Backup</button>
+    <button id="schermo-intero" class="tasto-barra" type="button" aria-label="Schermo intero">⛶</button>
+  </div>
+  <div id="schermo"></div>
+  <div id="comandi">
+    <div class="spalle"><button class="tasto-pad pillola" data-tasto="L">L</button><button class="tasto-pad pillola" data-tasto="R">R</button></div>
+    <div class="croce" id="croce" aria-label="Croce direzionale">
+      <span class="braccio orizzontale"></span><span class="braccio verticale"></span><span class="mozzo"></span>
+    </div>
+    <div class="ab">
+      <button class="tasto-pad tondo b" data-tasto="B">B</button>
+      <button class="tasto-pad tondo a" data-tasto="A">A</button>
+    </div>
+    <div class="centrali">
+      <button class="tasto-pad pillola" data-tasto="SELECT">SELECT</button>
+      <button class="tasto-pad pillola" data-tasto="START">START</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="file-gioco" accept=".zip,.gb,.gbc,.gba" hidden>
+<input type="file" id="file-salvataggio" accept=".srm,.sav,.rtc,.state" multiple hidden>
+<div id="avviso" role="status" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

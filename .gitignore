@@ -1,0 +1,13 @@
+# Mai online: giochi, salvataggi, istantanee (restano sul PC e nel telefono)
+*.gb
+*.gbc
+*.gba
+*.zip
+*.7z
+*.state
+*.sav
+*.srm
+*.rtc
+
+# banco di prova locale (carica i file dal disco del PC)
+dev/
